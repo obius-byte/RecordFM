@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             comboBox1 = new ComboBox();
             comboBox2 = new ComboBox();
             pictureBox1 = new PictureBox();
             trackBar1 = new TrackBar();
             pictureBox2 = new PictureBox();
+            notifyIcon1 = new NotifyIcon(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -74,6 +77,7 @@
             trackBar1.BackColor = SystemColors.Window;
             trackBar1.LargeChange = 2;
             trackBar1.Location = new Point(121, 70);
+            trackBar1.Maximum = 20;
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new Size(145, 45);
             trackBar1.TabIndex = 5;
@@ -93,6 +97,11 @@
             pictureBox2.TabStop = false;
             pictureBox2.Click += button1_Click;
             // 
+            // notifyIcon1
+            // 
+            notifyIcon1.Text = "notifyIcon1";
+            notifyIcon1.Visible = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -106,8 +115,10 @@
             Controls.Add(comboBox2);
             Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "Form1";
+            FormClosing += Form1_FormClosing;
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
@@ -122,5 +133,6 @@
         private PictureBox pictureBox1;
         private TrackBar trackBar1;
         private PictureBox pictureBox2;
+        private NotifyIcon notifyIcon1;
     }
 }

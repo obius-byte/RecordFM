@@ -12,18 +12,63 @@ namespace Record
 
         public StationModel _selectedStation;
 
+        private readonly ToolStripMenuItem _trayPlay;
+        private readonly ToolStripMenuItem _trayStop;
+
         // WasapiOut?
         public WaveOutEvent _wo = new();
 
         public Form1()
         {
             InitializeComponent();
+
+            notifyIcon1 = new NotifyIcon()
+            {
+                Icon = Resources.favicon,
+                ContextMenuStrip = new ContextMenuStrip()
+            };
+
+            _trayPlay = new("PLAY", null, new EventHandler((sender, e) =>
+            {
+                if (_wo.PlaybackState == PlaybackState.Stopped)
+                {
+                    Play();
+                    _trayStop.Enabled = true;
+                    _trayPlay.Enabled = false;
+                }
+            }), "PLAY");
+
+            _trayStop = new("STOP", null, new EventHandler((sender, e) =>
+            {
+                _wo.Stop();
+                _trayStop.Enabled = false;
+                _trayPlay.Enabled = true;
+            }), "STOP")
+            {
+                Enabled = false
+            };
+
+            notifyIcon1.ContextMenuStrip.Items.AddRange(new ToolStripItem[]
+            {
+                _trayPlay,
+                _trayStop,
+                new ToolStripSeparator(),
+                new ToolStripMenuItem("EXIT", null, new EventHandler((sender, e) => {
+                    notifyIcon1.Visible = false;
+                    Environment.Exit(1);
+                }), "EXIT")
+            });
+            notifyIcon1.DoubleClick += (sender, e) =>
+            {
+                notifyIcon1.Visible = false;
+                Show();
+            };
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            comboBox2.SelectedIndex = 2;
-            _wo.Volume = 1;
+            comboBox2.SelectedIndex = 1;
+            _wo.Volume = 0.5f;
 
             _ = LoadStations();
         }
@@ -59,7 +104,7 @@ namespace Record
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"Failed to load stations: {e}");
+                MessageBox.Show(e.ToString());
             }
         }
 
@@ -134,6 +179,9 @@ namespace Record
             {
                 Play();
             }
+
+            _trayPlay.Enabled = isPalying;
+            _trayStop.Enabled = !isPalying;
         }
 
         private async Task<Image> GetImageByUrl(string url)
@@ -149,7 +197,7 @@ namespace Record
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
-            _wo.Volume = (float)trackBar1.Value / 10;
+            _wo.Volume = (float)trackBar1.Value / 20;
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -160,6 +208,14 @@ namespace Record
                 Play();
                 pictureBox2.BackgroundImage = Resources.stop;
             }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+
+            notifyIcon1.Visible = true;
+            Hide();
         }
     }
 }
