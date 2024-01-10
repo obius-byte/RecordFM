@@ -1,0 +1,27 @@
+﻿<Window x:Class="Record.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Record"
+        mc:Ignorable="d"
+        Title="Record FM" 
+        Height="130" 
+        Width="337"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" 
+        ResizeMode="NoResize"
+        MouseDown="Window_MouseDown" Initialized="Window_Initialized" Background="{x:Null}" >
+    <Grid Margin="0">
+        <DockPanel Height="30" VerticalAlignment="Top">
+            <Image Name="close" Width="20" Height="20" Source="/Resources/close.png" HorizontalAlignment="Right" Margin="0,0,5,0" DockPanel.Dock="Right" MouseLeftButtonDown="close_MouseLeftButtonDown" />
+            <Image Name="minimize" Width="20" Height="20" Source="/Resources/minimize.png" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" DockPanel.Dock="Right" MouseLeftButtonDown="minimize_MouseLeftButtonDown" />
+        </DockPanel>
+        <Image Name="Image1" HorizontalAlignment="Left" Height="100" Margin="0,30,0,0" VerticalAlignment="Top" Width="100" Grid.ColumnSpan="2" Panel.ZIndex="2"/>
+        <Image Name="Image2" HorizontalAlignment="right" Height="100" Margin="0,30,0,0" VerticalAlignment="Top" Width="100" Grid.Column="1" MouseLeftButtonDown="PlayStop_MouseLeftButtonDown" MouseEnter="PlayStop_MouseEnter" MouseLeave="PlayStop_MouseLeave" />
+        <ComboBox Name="ComboBox1" HorizontalAlignment="Center" Margin="0,30,0,0" VerticalAlignment="Top" Width="136" SelectionChanged="ComboBox1_SelectionChanged">
+        </ComboBox>
+        <ComboBox Name="ComboBox2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="136" SelectionChanged="ComboBox2_SelectionChanged" Margin="0,65,0,0"/>
+        <Slider Name="Slider1" HorizontalAlignment="Center" Margin="0,96,0,0" VerticalAlignment="Top" Width="136" Maximum="20" LargeChange="2" SmallChange="1" Value="10" TickPlacement="TopLeft" ValueChanged="Slider_ValueChanged"/>
+    </Grid>
+</Window>
