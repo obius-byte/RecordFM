@@ -98,25 +98,20 @@ namespace Record
             }
         }
 
-        private void PlayStop_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void PlayStop_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = false;
 
-            var isPlaying = _wo.PlaybackState == PlaybackState.Playing;
-
-            Image2.Source = GetBitmapImage((isPlaying ? "play" : "stop") + ".png");
-
-            if (isPlaying)
+            if (_wo.PlaybackState == PlaybackState.Playing)
             {
                 _wo.Stop();
+                Image2.Source = GetBitmapImage("play.png");
             }
             else
             {
-                Play();
+                await Play();
+                Image2.Source = GetBitmapImage("stop.png");
             }
-
-            //_trayPlay.Enabled = isPalying;
-            //_trayStop.Enabled = !isPalying;
         }
 
         private void PlayStop_MouseEnter(object sender, MouseEventArgs e)
@@ -129,7 +124,7 @@ namespace Record
             Image2.Source = GetBitmapImage((_wo.PlaybackState == PlaybackState.Playing ? "stop" : "play") + ".png");
         }
 
-        private void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedStationId = ((ComboBoxItem)ComboBox1.SelectedItem).Value;
 
@@ -137,7 +132,7 @@ namespace Record
 
             //Title = $"{_selectedStation.Title} - {_selectedStation.Tooltip}";
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -149,7 +144,8 @@ namespace Record
             if (_wo.PlaybackState == PlaybackState.Playing)
             {
                 _wo.Stop();
-                Play();
+                Image2.Source = GetBitmapImage("play.png");
+                await Play();
                 Image2.Source = GetBitmapImage("stop.png");
             }
         }
@@ -159,12 +155,12 @@ namespace Record
             _wo.Volume = (float) Slider1.Value / 20;
         }
 
-        private void ComboBox2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ComboBox2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_wo.PlaybackState == PlaybackState.Playing)
             {
                 _wo.Stop();
-                Play();
+                await Play();
                 Image2.Source = GetBitmapImage("stop.png");
             }
         }
@@ -210,27 +206,34 @@ namespace Record
             return bitmap;
         }
 
-        private void Play()
+        private async Task Play()
         {
-            try
+            var selectedIndex = ComboBox2.SelectedIndex;
+
+            var task = Task.Run(() =>
             {
-                var urls = new string[] {
+                try
+                {
+                    var urls = new string[] {
                     _selectedStation.Stream64,
                     _selectedStation.Stream128,
                     _selectedStation.Stream320
                 };
-                var url = urls[ComboBox2.SelectedIndex];
+                    var url = urls[selectedIndex];
 
-                using (var mf = new MediaFoundationReader(url))
-                {
-                    _wo.Init(mf);
-                    _wo.Play();
+                    using (var mf = new MediaFoundationReader(url))
+                    {
+                        _wo.Init(mf);
+                        _wo.Play();
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString());
+                }
+            });
+
+            await task;
         }
 
         private void close_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
