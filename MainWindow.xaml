@@ -6,22 +6,30 @@
         xmlns:local="clr-namespace:Record"
         mc:Ignorable="d"
         Title="Record FM" 
-        Height="130" 
-        Width="337"
+        Height="150" 
+        Width="350"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" 
         ResizeMode="NoResize"
         MouseDown="Window_MouseDown" Initialized="Window_Initialized" Background="{x:Null}" >
-    <Grid Margin="0">
+    <Grid Margin="0,0,0,10">
         <DockPanel Height="30" VerticalAlignment="Top">
-            <Image Name="close" Width="20" Height="20" Source="/Resources/close.png" HorizontalAlignment="Right" Margin="0,0,5,0" DockPanel.Dock="Right" MouseLeftButtonDown="close_MouseLeftButtonDown" />
-            <Image Name="minimize" Width="20" Height="20" Source="/Resources/minimize.png" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" DockPanel.Dock="Right" MouseLeftButtonDown="minimize_MouseLeftButtonDown" />
+            <Border Height="20" Width="20" Background="#66000000" HorizontalAlignment="Right" Margin="0,0,5,0" DockPanel.Dock="Right">
+                <Image Name="close" Width="20" Height="20" Source="/Resources/close.png" MouseLeftButtonDown="close_MouseLeftButtonDown" />
+            </Border>
+            <Border Height="20" Width="20" Background="#66000000" HorizontalAlignment="Right" Margin="0,0,5,0" DockPanel.Dock="Right">
+                <Image Name="minimize" Width="20" Height="20" Source="/Resources/minimize.png" VerticalAlignment="Center"  MouseLeftButtonDown="minimize_MouseLeftButtonDown" />
+            </Border>
         </DockPanel>
-        <Image Name="Image1" HorizontalAlignment="Left" Height="100" Margin="0,30,0,0" VerticalAlignment="Top" Width="100" Grid.ColumnSpan="2" Panel.ZIndex="2"/>
-        <Image Name="Image2" HorizontalAlignment="right" Height="100" Margin="0,30,0,0" VerticalAlignment="Top" Width="100" Grid.Column="1" MouseLeftButtonDown="PlayStop_MouseLeftButtonDown" MouseEnter="PlayStop_MouseEnter" MouseLeave="PlayStop_MouseLeave" />
-        <ComboBox Name="ComboBox1" HorizontalAlignment="Center" Margin="0,30,0,0" VerticalAlignment="Top" Width="136" SelectionChanged="ComboBox1_SelectionChanged">
+        <Border Height="100" Width="100" Background="#66000000" Margin="5,35,0,5" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" Panel.ZIndex="2" CornerRadius="100,100,100,100">
+            <Image Name="Image1"  Height="100" Width="100" />
+        </Border>
+        <Border Height="100" Width="100" Background="#66000000" CornerRadius="100,100,100,100" HorizontalAlignment="right" Margin="0,35,5,0" VerticalAlignment="Top" Grid.Column="1">
+            <Image Name="Image2" Height="100" Width="100" MouseLeftButtonDown="PlayStop_MouseLeftButtonDown" MouseEnter="PlayStop_MouseEnter" MouseLeave="PlayStop_MouseLeave" />
+        </Border>
+        <ComboBox Name="ComboBox1" HorizontalAlignment="Center" Margin="0,35,0,0" VerticalAlignment="Top" Width="123" SelectionChanged="ComboBox1_SelectionChanged">
         </ComboBox>
-        <ComboBox Name="ComboBox2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="136" SelectionChanged="ComboBox2_SelectionChanged" Margin="0,65,0,0"/>
-        <Slider Name="Slider1" HorizontalAlignment="Center" Margin="0,96,0,0" VerticalAlignment="Top" Width="136" Maximum="20" LargeChange="2" SmallChange="1" Value="10" TickPlacement="TopLeft" ValueChanged="Slider_ValueChanged"/>
+        <ComboBox Name="ComboBox2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="123" SelectionChanged="ComboBox2_SelectionChanged" Margin="0,70,0,0"/>
+        <Slider Name="Slider1" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Width="122" Maximum="20" LargeChange="2" SmallChange="1" Value="10" TickPlacement="TopLeft" ValueChanged="Slider_ValueChanged"/>
     </Grid>
 </Window>
