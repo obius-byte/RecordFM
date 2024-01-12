@@ -1,0 +1,426 @@
+{
+    "ActiveEqualizerIndex": -1,
+    "BaseEqualizerBandList": [
+        {
+            "name": "Band1",
+            "Bandwidth": 0.8,
+            "Frequency": 100,
+            "Gain": 0.0
+        },
+        {
+            "name": "Band2",
+            "Bandwidth": 0.8,
+            "Frequency": 200,
+            "Gain": 0.0
+        },
+        {
+            "name": "Band3",
+            "Bandwidth": 0.8,
+            "Frequency": 400,
+            "Gain": 0.0
+        },
+        {
+            "name": "Band4",
+            "Bandwidth": 0.8,
+            "Frequency": 800,
+            "Gain": 0.0
+        },
+        {
+            "name": "Band5",
+            "Bandwidth": 0.8,
+            "Frequency": 1200,
+            "Gain": 0.0
+        },
+        {
+            "name": "Band6",
+            "Bandwidth": 0.8,
+            "Frequency": 2400,
+            "Gain": 0.0
+        },
+        {
+            "name": "Band7",
+            "Bandwidth": 0.8,
+            "Frequency": 4800,
+            "Gain": 0.0
+        },
+        {
+            "name": "Band8",
+            "Bandwidth": 0.8,
+            "Frequency": 9600,
+            "Gain": 0.0
+        }
+    ],
+    "CustomEqualizerList": [
+        {
+            "name": "Classic",
+            "bandList": [
+                {
+                    "name": "Band1",
+                    "Bandwidth": 0.8,
+                    "Frequency": 100,
+                    "Gain": 9.0
+                },
+                {
+                    "name": "Band2",
+                    "Bandwidth": 0.8,
+                    "Frequency": 200,
+                    "Gain": -3.0
+                },
+                {
+                    "name": "Band3",
+                    "Bandwidth": 0.8,
+                    "Frequency": 400,
+                    "Gain": -12.0
+                },
+                {
+                    "name": "Band4",
+                    "Bandwidth": 0.8,
+                    "Frequency": 800,
+                    "Gain": -3.0
+                },
+                {
+                    "name": "Band5",
+                    "Bandwidth": 0.8,
+                    "Frequency": 1200,
+                    "Gain": 3.0
+                },
+                {
+                    "name": "Band6",
+                    "Bandwidth": 0.8,
+                    "Frequency": 2400,
+                    "Gain": 9.0
+                },
+                {
+                    "name": "Band7",
+                    "Bandwidth": 0.8,
+                    "Frequency": 4800,
+                    "Gain": 12.0
+                },
+                {
+                    "name": "Band8",
+                    "Bandwidth": 0.8,
+                    "Frequency": 9600,
+                    "Gain": 15.0
+                }
+            ]
+        },
+        {
+            "name": "Loudness",
+            "bandList": [
+                {
+                    "name": "Band1",
+                    "Bandwidth": 0.8,
+                    "Frequency": 100,
+                    "Gain": 18.0
+                },
+                {
+                    "name": "Band2",
+                    "Bandwidth": 0.8,
+                    "Frequency": 200,
+                    "Gain": 9.0
+                },
+                {
+                    "name": "Band3",
+                    "Bandwidth": 0.8,
+                    "Frequency": 400,
+                    "Gain": 3.0
+                },
+                {
+                    "name": "Band4",
+                    "Bandwidth": 0.8,
+                    "Frequency": 800,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band5",
+                    "Bandwidth": 0.8,
+                    "Frequency": 1200,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band6",
+                    "Bandwidth": 0.8,
+                    "Frequency": 2400,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band7",
+                    "Bandwidth": 0.8,
+                    "Frequency": 4800,
+                    "Gain": 6.0
+                },
+                {
+                    "name": "Band8",
+                    "Bandwidth": 0.8,
+                    "Frequency": 9600,
+                    "Gain": 12.0
+                }
+            ]
+        },
+        {
+            "name": "Pop",
+            "bandList": [
+                {
+                    "name": "Band1",
+                    "Bandwidth": 0.8,
+                    "Frequency": 100,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band2",
+                    "Bandwidth": 0.8,
+                    "Frequency": 200,
+                    "Gain": 6.0
+                },
+                {
+                    "name": "Band3",
+                    "Bandwidth": 0.8,
+                    "Frequency": 400,
+                    "Gain": 9.0
+                },
+                {
+                    "name": "Band4",
+                    "Bandwidth": 0.8,
+                    "Frequency": 800,
+                    "Gain": 6.0
+                },
+                {
+                    "name": "Band5",
+                    "Bandwidth": 0.8,
+                    "Frequency": 1200,
+                    "Gain": 3.0
+                },
+                {
+                    "name": "Band6",
+                    "Bandwidth": 0.8,
+                    "Frequency": 2400,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band7",
+                    "Bandwidth": 0.8,
+                    "Frequency": 4800,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band8",
+                    "Bandwidth": 0.8,
+                    "Frequency": 9600,
+                    "Gain": 0.0
+                }
+            ]
+        },
+        {
+            "name": "Rock",
+            "bandList": [
+                {
+                    "name": "Band1",
+                    "Bandwidth": 0.8,
+                    "Frequency": 100,
+                    "Gain": 12.0
+                },
+                {
+                    "name": "Band2",
+                    "Bandwidth": 0.8,
+                    "Frequency": 200,
+                    "Gain": 6.0
+                },
+                {
+                    "name": "Band3",
+                    "Bandwidth": 0.8,
+                    "Frequency": 400,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band4",
+                    "Bandwidth": 0.8,
+                    "Frequency": 800,
+                    "Gain": -6.0
+                },
+                {
+                    "name": "Band5",
+                    "Bandwidth": 0.8,
+                    "Frequency": 1200,
+                    "Gain": -3.0
+                },
+                {
+                    "name": "Band6",
+                    "Bandwidth": 0.8,
+                    "Frequency": 2400,
+                    "Gain": 3.0
+                },
+                {
+                    "name": "Band7",
+                    "Bandwidth": 0.8,
+                    "Frequency": 4800,
+                    "Gain": 9.0
+                },
+                {
+                    "name": "Band8",
+                    "Bandwidth": 0.8,
+                    "Frequency": 9600,
+                    "Gain": 12.0
+                }
+            ]
+        },
+        {
+            "name": "Custom 1",
+            "bandList": [
+                {
+                    "name": "Band1",
+                    "Bandwidth": 0.8,
+                    "Frequency": 100,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band2",
+                    "Bandwidth": 0.8,
+                    "Frequency": 200,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band3",
+                    "Bandwidth": 0.8,
+                    "Frequency": 400,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band4",
+                    "Bandwidth": 0.8,
+                    "Frequency": 800,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band5",
+                    "Bandwidth": 0.8,
+                    "Frequency": 1200,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band6",
+                    "Bandwidth": 0.8,
+                    "Frequency": 2400,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band7",
+                    "Bandwidth": 0.8,
+                    "Frequency": 4800,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band8",
+                    "Bandwidth": 0.8,
+                    "Frequency": 9600,
+                    "Gain": 0.0
+                }
+            ]
+        },
+        {
+            "name": "Custom 2",
+            "bandList": [
+                {
+                    "name": "Band1",
+                    "Bandwidth": 0.8,
+                    "Frequency": 100,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band2",
+                    "Bandwidth": 0.8,
+                    "Frequency": 200,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band3",
+                    "Bandwidth": 0.8,
+                    "Frequency": 400,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band4",
+                    "Bandwidth": 0.8,
+                    "Frequency": 800,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band5",
+                    "Bandwidth": 0.8,
+                    "Frequency": 1200,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band6",
+                    "Bandwidth": 0.8,
+                    "Frequency": 2400,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band7",
+                    "Bandwidth": 0.8,
+                    "Frequency": 4800,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band8",
+                    "Bandwidth": 0.8,
+                    "Frequency": 9600,
+                    "Gain": 0.0
+                }
+            ]
+        },
+        {
+            "name": "Custom 3",
+            "bandList": [
+                {
+                    "name": "Band1",
+                    "Bandwidth": 0.8,
+                    "Frequency": 100,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band2",
+                    "Bandwidth": 0.8,
+                    "Frequency": 200,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band3",
+                    "Bandwidth": 0.8,
+                    "Frequency": 400,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band4",
+                    "Bandwidth": 0.8,
+                    "Frequency": 800,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band5",
+                    "Bandwidth": 0.8,
+                    "Frequency": 1200,
+                    "Gain": -0.0
+                },
+                {
+                    "name": "Band6",
+                    "Bandwidth": 0.8,
+                    "Frequency": 2400,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band7",
+                    "Bandwidth": 0.8,
+                    "Frequency": 4800,
+                    "Gain": 0.0
+                },
+                {
+                    "name": "Band8",
+                    "Bandwidth": 0.8,
+                    "Frequency": 9600,
+                    "Gain": 0.0
+                }
+            ]
+        }
+    ]
+}

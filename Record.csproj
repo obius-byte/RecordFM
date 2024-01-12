@@ -21,7 +21,7 @@
     <None Remove="Resources\play-hover.png" />
     <None Remove="Resources\play.png" />
     <None Remove="Resources\record_image600_white_fill.png" />
-    <None Remove="Resources\record_new.jpeg" />
+    <None Remove="Resources\record_new.jpg" />
     <None Remove="Resources\stop-hover.png" />
     <None Remove="Resources\stop.png" />
   </ItemGroup>
@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Extras" Version="2.2.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
@@ -57,7 +58,7 @@
     <Resource Include="Resources\record_image600_white_fill.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\record_new.jpeg">
+    <Resource Include="Resources\record_new.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\stop-hover.png">
@@ -81,6 +82,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Record.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
