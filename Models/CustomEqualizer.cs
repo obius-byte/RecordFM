@@ -1,6 +1,4 @@
-﻿using NAudio.Extras;
-
-namespace Record.Models
+﻿namespace Record.Models
 {
     public class CustomEqualizer
     {

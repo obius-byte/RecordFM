@@ -1,6 +1,6 @@
 ﻿namespace Record.Models
 {
-    public class ResultModel
+    public class ResultStationsModel
     {
         public List<TagModel> Tags { get; set; }
 

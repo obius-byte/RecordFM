@@ -2,6 +2,7 @@
 using NAudio.Wave;
 using Newtonsoft.Json;
 using Record.Models;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Windows;
@@ -22,13 +23,19 @@ namespace Record
         private StationModel _selectedStation;
 
         // WasapiOut?
-        private readonly WaveOutEvent _wo = new();
+        private readonly WaveOutEvent _player = new ();
 
         private System.Windows.Forms.NotifyIcon _tray;
 
         private Equalizer _equalizer;
 
+        private readonly List<CustomEqualizer> _equalizerList;
+
+        private CustomEqualizerBand[] _equalizerBandList = new CustomEqualizerBand[8];
+
         private PreferencesModel _preferences;
+
+        private bool _manualChangeEqualizer = true;
 
         public MainWindow()
         {
@@ -41,6 +48,80 @@ namespace Record
                 MessageBox.Show(e.Message);
                 Application.Current.Shutdown();
             }
+
+            _equalizerList = new List<CustomEqualizer> {
+                new()
+                {
+                    Name = "Base",
+                    BandList = new CustomEqualizerBand[] {
+                        new() { Name = "Band1", Bandwidth = 0.8f, Frequency = 100, Gain = 0 },
+                        new() { Name = "Band2", Bandwidth = 0.8f, Frequency = 200, Gain = 0 },
+                        new() { Name = "Band3", Bandwidth = 0.8f, Frequency = 400, Gain = 0 },
+                        new() { Name = "Band4", Bandwidth = 0.8f, Frequency = 800, Gain = 0 },
+                        new() { Name = "Band5", Bandwidth = 0.8f, Frequency = 1200, Gain = 0 },
+                        new() { Name = "Band6", Bandwidth = 0.8f, Frequency = 2400, Gain = 0 },
+                        new() { Name = "Band7", Bandwidth = 0.8f, Frequency = 4800, Gain = 0 },
+                        new() { Name = "Band8", Bandwidth = 0.8f, Frequency = 9600, Gain = 0 }
+                    }
+                },
+                new()
+                {
+                    Name = "Classic",
+                    BandList = new CustomEqualizerBand[] {
+                        new() { Name = "Band1", Bandwidth = 0.8f, Frequency = 100, Gain = 9 },
+                        new() { Name = "Band2", Bandwidth = 0.8f, Frequency = 200, Gain = -3 },
+                        new() { Name = "Band3", Bandwidth = 0.8f, Frequency = 400, Gain = -12 },
+                        new() { Name = "Band4", Bandwidth = 0.8f, Frequency = 800, Gain = -3 },
+                        new() { Name = "Band5", Bandwidth = 0.8f, Frequency = 1200, Gain = 3 },
+                        new() { Name = "Band6", Bandwidth = 0.8f, Frequency = 2400, Gain = 9 },
+                        new() { Name = "Band7", Bandwidth = 0.8f, Frequency = 4800, Gain = 12 },
+                        new() { Name = "Band8", Bandwidth = 0.8f, Frequency = 9600, Gain = 15 }
+                    }
+                },
+                new()
+                {
+                    Name = "Loudness",
+                    BandList = new CustomEqualizerBand[] {
+                        new() { Name = "Band1", Bandwidth = 0.8f, Frequency = 100, Gain = 18 },
+                        new() { Name = "Band2", Bandwidth = 0.8f, Frequency = 200, Gain = 9 },
+                        new() { Name = "Band3", Bandwidth = 0.8f, Frequency = 400, Gain = 3 },
+                        new() { Name = "Band4", Bandwidth = 0.8f, Frequency = 800, Gain = 0 },
+                        new() { Name = "Band5", Bandwidth = 0.8f, Frequency = 1200, Gain = 0 },
+                        new() { Name = "Band6", Bandwidth = 0.8f, Frequency = 2400, Gain = 0 },
+                        new() { Name = "Band7", Bandwidth = 0.8f, Frequency = 4800, Gain = 6 },
+                        new() { Name = "Band8", Bandwidth = 0.8f, Frequency = 9600, Gain = 12 }
+                    }
+                },
+                new()
+                {
+                    Name = "Pop",
+                    BandList = new CustomEqualizerBand[] {
+                        new() { Name = "Band1", Bandwidth = 0.8f, Frequency = 100, Gain = 0 },
+                        new() { Name = "Band2", Bandwidth = 0.8f, Frequency = 200, Gain = 6 },
+                        new() { Name = "Band3", Bandwidth = 0.8f, Frequency = 400, Gain = 9 },
+                        new() { Name = "Band4", Bandwidth = 0.8f, Frequency = 800, Gain = 6 },
+                        new() { Name = "Band5", Bandwidth = 0.8f, Frequency = 1200, Gain = 3 },
+                        new() { Name = "Band6", Bandwidth = 0.8f, Frequency = 2400, Gain = 0 },
+                        new() { Name = "Band7", Bandwidth = 0.8f, Frequency = 4800, Gain = 0 },
+                        new() { Name = "Band8", Bandwidth = 0.8f, Frequency = 9600, Gain = 0 }
+                    }
+                },
+                new()
+                {
+                    Name = "Rock",
+                    BandList = new CustomEqualizerBand[] {
+                        new() { Name = "Band1", Bandwidth = 0.8f, Frequency = 100, Gain = 12 },
+                        new() { Name = "Band2", Bandwidth = 0.8f, Frequency = 200, Gain = 6 },
+                        new() { Name = "Band3", Bandwidth = 0.8f, Frequency = 400, Gain = 0 },
+                        new() { Name = "Band4", Bandwidth = 0.8f, Frequency = 800, Gain = -6 },
+                        new() { Name = "Band5", Bandwidth = 0.8f, Frequency = 1200, Gain = -3 },
+                        new() { Name = "Band6", Bandwidth = 0.8f, Frequency = 2400, Gain = 3 },
+                        new() { Name = "Band7", Bandwidth = 0.8f, Frequency = 4800, Gain = 9 },
+                        new() { Name = "Band8", Bandwidth = 0.8f, Frequency = 9600, Gain = 12 }
+                    }
+                },
+                _preferences.CustomEqualizer
+            };
 
             /**
              * Sub-Bass (20-60Hz)
@@ -64,27 +145,12 @@ namespace Record
             ComboBox2.Items.Add("320 kbit/s");
             ComboBox2.SelectedIndex = 1;
 
-            foreach (var customEqualizer in _preferences.CustomEqualizerList)
+            foreach (var equalizer in _equalizerList)
             {
-                ComboBox3.Items.Add(customEqualizer.Name);
+                ComboBox3.Items.Add(equalizer.Name);
             }
+
             ComboBox3.SelectedIndex = _preferences.ActiveEqualizerIndex;
-
-            EQActivate.IsChecked =_preferences.ActiveEqualizerIndex != -1;
-
-            if (_preferences.ActiveEqualizerIndex != -1)
-            {
-                var bandList = _preferences.CustomEqualizerList[_preferences.ActiveEqualizerIndex].BandList;
-                
-                Band1Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band1").Gain;
-                Band2Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band2").Gain;
-                Band3Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band3").Gain;
-                Band4Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band4").Gain;
-                Band5Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band5").Gain;
-                Band6Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band6").Gain;
-                Band7Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band7").Gain;
-                Band8Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band8").Gain;
-            }
 
             _tray = new System.Windows.Forms.NotifyIcon()
             {
@@ -99,15 +165,12 @@ namespace Record
                 _tray.Visible = false;
             };
 
-            _ = LoadStations();
-        }
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
+            Header.MouseLeftButtonDown += (sender, e) =>
             {
                 DragMove();
-            }
+            };
+
+            _ = LoadStations();
         }
 
         private async Task LoadStations()
@@ -124,6 +187,8 @@ namespace Record
 
                     var model = JsonConvert.DeserializeObject<StationsModel>(json);
 
+                    //Debug.WriteLine("debug: " + JsonConvert.SerializeObject(model, Formatting.Indented));
+
                     _stationList = model.Result.Stations;
                     _stationList.ForEach(st =>
                     {
@@ -135,7 +200,49 @@ namespace Record
                     });
                     ComboBox1.SelectedIndex = 0;
 
-                    //Debug.WriteLine("debug: " + JsonConvert.SerializeObject(model, Formatting.Indented));
+                    _ = Task.Run(async () => {
+                        while (true)
+                        {
+                            await LoadStationsNow();
+                            await Task.Delay(TimeSpan.FromSeconds(5));
+                        }
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        private async Task LoadStationsNow()
+        {
+            try
+            {
+                using (var client = new HttpClient()) {
+                    var response = await client.GetAsync("https://www.radiorecord.ru/api/stations/now/");
+
+                    var json = await response.Content.ReadAsStringAsync();
+
+                    var model = JsonConvert.DeserializeObject<StationsNowModel>(json);
+
+                    var track = model.Result.SingleOrDefault(station => station.Id == _selectedStation.Id).Track;
+
+                    _ = Task.Run(() =>
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            var trackImageUrl = track.Image100.StartsWith("http") 
+                                ? track.Image100 
+                                : "https://www.radiorecord.ru" + track.Image100;
+
+                            TrackImage.Source = GetImageSourceByUrl(trackImageUrl);
+                            TrackImage.Tag = track.ShareUrl;
+
+                            Song.Content = track.Song;
+                            Artist.Content = track.Artist;
+                        });
+                    });
                 }
             }
             catch (Exception e)
@@ -148,9 +255,9 @@ namespace Record
         {
             e.Handled = false;
 
-            if (_wo.PlaybackState == PlaybackState.Playing)
+            if (_player.PlaybackState == PlaybackState.Playing)
             {
-                _wo.Stop();
+                _player.Stop();
                 Image2.Source = GetBitmapImage("play.png");
             }
             else
@@ -162,12 +269,12 @@ namespace Record
 
         private void PlayStop_MouseEnter(object sender, MouseEventArgs e)
         {
-            Image2.Source = GetBitmapImage((_wo.PlaybackState == PlaybackState.Playing ? "stop-hover" : "play-hover") + ".png");
+            Image2.Source = GetBitmapImage((_player.PlaybackState == PlaybackState.Playing ? "stop-hover" : "play-hover") + ".png");
         }
 
         private void PlayStop_MouseLeave(object sender, MouseEventArgs e)
         {
-            Image2.Source = GetBitmapImage((_wo.PlaybackState == PlaybackState.Playing ? "stop" : "play") + ".png");
+            Image2.Source = GetBitmapImage((_player.PlaybackState == PlaybackState.Playing ? "stop" : "play") + ".png");
         }
 
         private async void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -187,25 +294,25 @@ namespace Record
                 });
             });
 
-            if (_wo.PlaybackState == PlaybackState.Playing)
+            if (_player.PlaybackState == PlaybackState.Playing)
             {
-                _wo.Stop();
+                _player.Stop();
                 Image2.Source = GetBitmapImage("play.png");
                 await Play();
                 Image2.Source = GetBitmapImage("stop.png");
             }
         }
 
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void VolumeValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _wo.Volume = (float) Slider1.Value / 20;
+            _player.Volume = (float) Volume.Value / 10;
         }
 
         private async void ComboBox2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_wo.PlaybackState == PlaybackState.Playing)
+            if (_player.PlaybackState == PlaybackState.Playing)
             {
-                _wo.Stop();
+                _player.Stop();
                 await Play();
                 Image2.Source = GetBitmapImage("stop.png");
             }
@@ -255,30 +362,24 @@ namespace Record
         private async Task Play()
         {
             var selectedBitrateIndex = ComboBox2.SelectedIndex;
-            var isEqActivated = EQActivate.IsChecked ?? false;
-            var selectedEqualizerIndex = ComboBox3.SelectedIndex;
 
             var task = Task.Run(() =>
             {
                 try
                 {
                     var urls = new string[] {
-                    _selectedStation.Stream64,
-                    _selectedStation.Stream128,
-                    _selectedStation.Stream320
-                };
+                        _selectedStation.Stream64,
+                        _selectedStation.Stream128,
+                        _selectedStation.Stream320
+                    };
                     var url = urls[selectedBitrateIndex];
 
-                    using (var mf = new MediaFoundationReader(url))
+                    using (var reader = new MediaFoundationReader(url))
                     {
-                        var equalizerBandList = isEqActivated && selectedEqualizerIndex != -1
-                            ? _preferences.CustomEqualizerList[selectedEqualizerIndex].BandList
-                            : _preferences.BaseEqualizerBandList;
+                        _equalizer = new Equalizer(reader.ToSampleProvider(), _equalizerBandList);
 
-                        _equalizer = new Equalizer(mf.ToSampleProvider(), equalizerBandList);
-
-                        _wo.Init(_equalizer);
-                        _wo.Play();
+                        _player.Init(_equalizer);
+                        _player.Play();
                     }
                 }
                 catch (Exception e)
@@ -303,103 +404,62 @@ namespace Record
             _tray.Visible = true;
         }
 
-        private void CustomEqualizerValueChanged(int index, float value)
+        private void BandGainValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (ComboBox3.SelectedIndex > 3)
+            //var bandName = (sender as Slider).Name;
+            var bandName = (sender as Slider).Tag.ToString();
+
+            if (_manualChangeEqualizer && ComboBox3.SelectedIndex != 5)
             {
-                _preferences.CustomEqualizerList[ComboBox3.SelectedIndex].BandList[index].Gain = value;
+                ComboBox3.SelectedIndex = 5;
+                return;
             }
 
+            _equalizerBandList.SingleOrDefault(band => band.Name == bandName).Gain = (float)e.NewValue;
             _equalizer?.Update();
         }
 
-        private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            CustomEqualizerValueChanged(0, (float)e.NewValue);
-        }
-
-        private void Slider_ValueChanged_2(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            CustomEqualizerValueChanged(1, (float)e.NewValue);
-        }
-
-        private void Slider_ValueChanged_3(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            CustomEqualizerValueChanged(2, (float)e.NewValue);
-        }
-
-        private void Slider_ValueChanged_4(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            CustomEqualizerValueChanged(3, (float)e.NewValue);
-        }
-
-        private void Slider_ValueChanged_5(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            CustomEqualizerValueChanged(4, (float)e.NewValue);
-        }
-
-        private void Slider_ValueChanged_6(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            CustomEqualizerValueChanged(5, (float)e.NewValue);
-        }
-
-        private void Slider_ValueChanged_7(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            CustomEqualizerValueChanged(6, (float)e.NewValue);
-        }
-
-        private void Slider_ValueChanged_8(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            CustomEqualizerValueChanged(7, (float)e.NewValue);
-        }
-
-        private void CheckBoxChanged(object sender, RoutedEventArgs e)
-        {
-            if (_wo.PlaybackState == PlaybackState.Playing)
-            {
-                _wo.Stop();
-                _ = Play();
-            }
-        }
-
-        private void ComboBox3_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void EqualizerSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var index = ComboBox3.SelectedIndex;
 
             _preferences.ActiveEqualizerIndex = index;
 
-            var bandList = index == -1 ? _preferences.BaseEqualizerBandList : _preferences.CustomEqualizerList[index].BandList;
-
-            var isEditable = index > 3;
-
-            Band1Gain.IsEnabled = isEditable;
-            Band2Gain.IsEnabled = isEditable;
-            Band3Gain.IsEnabled = isEditable;
-            Band4Gain.IsEnabled = isEditable;
-            Band5Gain.IsEnabled = isEditable;
-            Band6Gain.IsEnabled = isEditable;
-            Band7Gain.IsEnabled = isEditable;
-            Band8Gain.IsEnabled = isEditable;
-
-            Band1Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band1").Gain;
-            Band2Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band2").Gain;
-            Band3Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band3").Gain;
-            Band4Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band4").Gain;
-            Band5Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band5").Gain;
-            Band6Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band6").Gain;
-            Band7Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band7").Gain;
-            Band8Gain.Value = bandList.FirstOrDefault(b => b.Name == "Band8").Gain;
-
-            var isActivated = EQActivate.IsChecked ?? false;
-
-            if (isActivated &&  _wo.PlaybackState == PlaybackState.Playing)
+            for (int i = 0; i < 8; i++)
             {
-                _wo.Stop();
-                _ = Play();
+                _equalizerBandList[i] = _equalizerList[index].BandList[i];
             }
+
+            _manualChangeEqualizer = false;
+
+            Band1Gain.Value = _equalizerBandList.SingleOrDefault(band => band.Name == "Band1").Gain;
+            Band2Gain.Value = _equalizerBandList.SingleOrDefault(band => band.Name == "Band2").Gain;
+            Band3Gain.Value = _equalizerBandList.SingleOrDefault(band => band.Name == "Band3").Gain;
+            Band4Gain.Value = _equalizerBandList.SingleOrDefault(band => band.Name == "Band4").Gain;
+            Band5Gain.Value = _equalizerBandList.SingleOrDefault(band => band.Name == "Band5").Gain;
+            Band6Gain.Value = _equalizerBandList.SingleOrDefault(band => band.Name == "Band6").Gain;
+            Band7Gain.Value = _equalizerBandList.SingleOrDefault(band => band.Name == "Band7").Gain;
+            Band8Gain.Value = _equalizerBandList.SingleOrDefault(band => band.Name == "Band8").Gain;
+
+            _manualChangeEqualizer = true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                _equalizerList[5].BandList[i].Gain = 0;
+            }
+
+            ComboBox3.SelectedIndex = 0;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
             {
@@ -411,18 +471,15 @@ namespace Record
             }
         }
 
-        private void Reset_Click(object sender, RoutedEventArgs e)
+        private void ClickTrackImage(object sender, MouseButtonEventArgs e)
         {
-            Band1Gain.Value = 0;
-            Band2Gain.Value = 0;
-            Band3Gain.Value = 0;
-            Band4Gain.Value = 0;
-            Band5Gain.Value = 0;
-            Band6Gain.Value = 0;
-            Band7Gain.Value = 0;
-            Band8Gain.Value = 0;
+            var url = (sender as Image).Tag.ToString();
 
-            ComboBox3.SelectedItem = null;
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
         }
     }
 }

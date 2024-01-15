@@ -2,6 +2,6 @@
 {
     public class StationsModel
     {
-        public ResultModel Result { get; set; }
+        public ResultStationsModel Result { get; set; }
     }
 }

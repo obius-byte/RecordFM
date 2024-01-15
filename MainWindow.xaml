@@ -6,67 +6,87 @@
         xmlns:local="clr-namespace:Record"
         mc:Ignorable="d"
         Title="Record FM" 
-        Height="360" 
+        Height="480" 
         Width="360"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" 
         ResizeMode="NoResize"
-        MouseDown="Window_MouseDown" Initialized="Window_Initialized" >
+        Initialized="Window_Initialized" Closing="Window_Closing" >
     <Window.Background>
         <ImageBrush ImageSource="/Resources/record_new.jpg" Stretch="UniformToFill" TileMode="None"/>
     </Window.Background>
-    <Grid Margin="0,0,0,0">
-        <DockPanel Height="30" VerticalAlignment="Top">
-            <Border Height="20" Width="20" Background="#66000000" HorizontalAlignment="Right" Margin="0,0,5,0" DockPanel.Dock="Right">
-                <Image x:Name="close" Width="20" Height="20" Source="/Resources/close.png" MouseLeftButtonDown="close_MouseLeftButtonDown" />
+    <DockPanel>
+        <Grid Name="Header" VerticalAlignment="Top" DockPanel.Dock="Top">
+            <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="Gray" Background="#66000000">
+                <StackPanel Margin="0" Orientation="Horizontal">
+                    <Border Margin="310,5,5,5" Height="20" Width="20" Background="#66000000" HorizontalAlignment="Right">
+                        <Image x:Name="minimize" Width="20" Height="20" Source="/Resources/minimize.png" VerticalAlignment="Center"  MouseLeftButtonDown="minimize_MouseLeftButtonDown" RenderTransformOrigin="-1.15,-0.975" />
+                    </Border>
+                    <Border Height="20" Width="20" Background="#66000000" HorizontalAlignment="Right">
+                        <Image x:Name="close" Width="20" Height="20" Source="/Resources/close.png" MouseLeftButtonDown="close_MouseLeftButtonDown" />
+                    </Border>
+                </StackPanel>
             </Border>
-            <Border Height="20" Width="20" Background="#66000000" HorizontalAlignment="Right" Margin="0,0,5,0" DockPanel.Dock="Right">
-                <Image x:Name="minimize" Width="20" Height="20" Source="/Resources/minimize.png" VerticalAlignment="Center"  MouseLeftButtonDown="minimize_MouseLeftButtonDown" />
+        </Grid>
+        <Grid DockPanel.Dock="Top" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Grid.Column="0" Height="100" Width="100" Background="#66000000" CornerRadius="100,100,100,100" HorizontalAlignment="Left">
+                <Image x:Name="Image1"  Height="100" Width="100" />
             </Border>
-        </DockPanel>
-        <Border Height="100" Width="100" Background="#66000000" Margin="5,35,0,5" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" Panel.ZIndex="2" CornerRadius="100,100,100,100">
-            <Image x:Name="Image1"  Height="100" Width="100" />
-        </Border>
-        <Border Height="100" Width="100" Background="#66000000" CornerRadius="100,100,100,100" HorizontalAlignment="right" Margin="0,35,5,0" VerticalAlignment="Top" Grid.Column="1">
-            <Image x:Name="Image2" Height="100" Width="100" MouseLeftButtonDown="PlayStop_MouseLeftButtonDown" MouseEnter="PlayStop_MouseEnter" MouseLeave="PlayStop_MouseLeave" />
-        </Border>
-        <ComboBox x:Name="ComboBox1" HorizontalAlignment="Center" Margin="0,35,0,0" VerticalAlignment="Top" Width="123" SelectionChanged="ComboBox1_SelectionChanged"/>
-        <ComboBox x:Name="ComboBox2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="123" SelectionChanged="ComboBox2_SelectionChanged" Margin="0,70,0,0"/>
-        <Slider x:Name="Slider1" HorizontalAlignment="Center" Margin="0,105,0,0" VerticalAlignment="Top" Width="122" Maximum="20" LargeChange="2" SmallChange="1" Value="10" TickPlacement="TopLeft" ValueChanged="Slider_ValueChanged" Background="{x:Null}"/>
-        <GroupBox Header="Graphic EQ" Margin="0,135,0,0" Foreground="White" Background="#66000000">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <!--<Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>-->
-                <DockPanel Grid.Row="0" Margin="5">
-                    <CheckBox x:Name="EQActivate" Content="Activate" VerticalAlignment="Center" Foreground="White" Unchecked="CheckBoxChanged" Checked="CheckBoxChanged" HorizontalAlignment="Left"/>
-                    <Button x:Name="Reset" Content="RESET" Width="50" HorizontalAlignment="Right" DockPanel.Dock="Right" Click="Reset_Click" FontFamily="Arial" />
-                </DockPanel>
-                <DockPanel Grid.Row="1" Margin="5" HorizontalAlignment="Center">
-                    <Slider Name="Band1Gain" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="Slider_ValueChanged_1" SmallChange="1" LargeChange="2"/>
-                    <Slider Name="Band2Gain" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="Slider_ValueChanged_2" SmallChange="1" LargeChange="2"/>
-                    <Slider Name="Band3Gain" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="Slider_ValueChanged_3" SmallChange="1" LargeChange="2"/>
-                    <Slider Name="Band4Gain" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="Slider_ValueChanged_4" SmallChange="1" LargeChange="2"/>
-                    <Slider Name="Band5Gain" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="Slider_ValueChanged_5" SmallChange="1" LargeChange="2"/>
-                    <Slider Name="Band6Gain" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="Slider_ValueChanged_6" SmallChange="1" LargeChange="2"/>
-                    <Slider Name="Band7Gain" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="Slider_ValueChanged_7" SmallChange="1" LargeChange="2"/>
-                    <Slider Name="Band8Gain" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="Slider_ValueChanged_8" SmallChange="1" LargeChange="2"/>
-                </DockPanel>
-                <DockPanel Grid.Row="2">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                        <Label Content="Preference" Foreground="White"></Label>
-                        <ComboBox Name="ComboBox3" Width="150" SelectionChanged="ComboBox3_SelectionChanged"></ComboBox>
-                        <Button Content="SAVE" Click="Button_Click" Margin="5,0,0,0" Panel.ZIndex="-1" Width="51" FontFamily="Arial"/>
+            <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ComboBox x:Name="ComboBox1" Width="123" SelectionChanged="ComboBox1_SelectionChanged" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,5"/>
+                <ComboBox x:Name="ComboBox2" Width="123" SelectionChanged="ComboBox2_SelectionChanged" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" />
+                <Slider Name="Volume" Width="122" Maximum="10" LargeChange="2" SmallChange="1" Value="5" TickPlacement="TopLeft" ValueChanged="VolumeValueChanged" Background="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </StackPanel>
+            <Border Grid.Row="0" Grid.Column="2" Height="100" Width="100" Background="#66000000" CornerRadius="100,100,100,100" HorizontalAlignment="Right">
+                <Image x:Name="Image2" Height="100" Width="100" MouseLeftButtonDown="PlayStop_MouseLeftButtonDown" MouseEnter="PlayStop_MouseEnter" MouseLeave="PlayStop_MouseLeave" />
+            </Border>
+            <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" BorderThickness="0.5" Header="Track" Foreground="White" Background="#99000000" VerticalAlignment="Top">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0" Height="50" Width="50" CornerRadius="10" HorizontalAlignment="Left" Background="#66000000">
+                        <Image x:Name="TrackImage" Height="50" Width="50" MouseLeftButtonDown="ClickTrackImage" Tag="url" />
+                    </Border>
+                    <StackPanel Grid.Row="0" Grid.Column="1">
+                        <Label Name="Song" Content="Reserved - song" Foreground="White" FontFamily="Courier New" FontSize="16" Background="{x:Null}" />
+                        <Label Name="Artist" Content="reserved - artist" Foreground="White" FontFamily="Courier New" Background="{x:Null}" VerticalAlignment="Top" FontSize="11" />
                     </StackPanel>
-                </DockPanel>
-            </Grid>
-        </GroupBox>
-    </Grid>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Row="2" Header="Graphic EQ" Foreground="White" BorderThickness="0.5" Background="#66000000" VerticalAlignment="Top">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Height="200" HorizontalAlignment="Center">
+                        <!--<Slider Name="PreAmp" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" SmallChange="1" LargeChange="2"/>
+                        <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="White" />-->
+                        <Slider Name="Band1Gain" Tag="Band1" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="BandGainValueChanged" SmallChange="1" LargeChange="2"/>
+                        <Slider Name="Band2Gain" Tag="Band2" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="BandGainValueChanged" SmallChange="1" LargeChange="2"/>
+                        <Slider Name="Band3Gain" Tag="Band3" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="BandGainValueChanged" SmallChange="1" LargeChange="2"/>
+                        <Slider Name="Band4Gain" Tag="Band4" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="BandGainValueChanged" SmallChange="1" LargeChange="2"/>
+                        <Slider Name="Band5Gain" Tag="Band5" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="BandGainValueChanged" SmallChange="1" LargeChange="2"/>
+                        <Slider Name="Band6Gain" Tag="Band6" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="BandGainValueChanged" SmallChange="1" LargeChange="2"/>
+                        <Slider Name="Band7Gain" Tag="Band7" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="BandGainValueChanged" SmallChange="1" LargeChange="2"/>
+                        <Slider Name="Band8Gain" Tag="Band8" Orientation="Vertical" Margin="8" Minimum="-30" Maximum="30" Value="0" ValueChanged="BandGainValueChanged" SmallChange="1" LargeChange="2"/>
+                    </StackPanel>
+                    <DockPanel Grid.Row="1">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label Content="Preference" Foreground="White"></Label>
+                            <ComboBox Name="ComboBox3" Width="200" SelectionChanged="EqualizerSelectionChanged" VerticalAlignment="Center"></ComboBox>
+                            <Button x:Name="Reset" Content="Reset" Margin="5,0,0,0" DockPanel.Dock="Right" Click="Reset_Click" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center" Height="22" Width="65" />
+                        </StackPanel>
+                    </DockPanel>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </DockPanel>
 </Window>
